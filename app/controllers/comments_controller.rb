@@ -1,6 +1,7 @@
 class CommentsController < ApplicationController
     def create
-        comment = Comment.create(text: "#{params["user"]["name"]} says: #{params["text"]}")
+        butterfly = Butterfly.find(params["butterfly_id"])
+        comment = butterfly.comment.build(text: "#{params["user"]["name"]} says: #{params["text"]}")
         render json: comment
     end
 end

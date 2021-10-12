@@ -13,6 +13,7 @@ function renderButterfly(butterfly) {
             <p class="description-text">${butterfly.description}</p>
         </div>
         <form class="comment-form">
+            <input type="hidden" name="butterflyId" value="${butterfly.id}">
             <input type="text" name="comment" placeholder="Comment..." >
             <input type="submit" name="submit" class="comment-submit" value="Comment">
         </form>
@@ -67,21 +68,20 @@ function addDescriptionListener(description) {
 function addCommentListener(form) {
     form.addEventListener("submit", function(event) {
         event.preventDefault();
-        console.log(currentUser);
         currentUser.comment(event)
     })
 }
 
 function newComment(event) {
-    fetch("http://localhost:3000/comments", {
+    const butterflyId = event.target.butterflyId.value
+    fetch(`http://localhost:3000/butterflies/${butterflyId}/comments`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
             "Accept": "application/json"
         },
         body: JSON.stringify({
-            "text": event.target.comment.value,
-            "user": currentUser
+            "text": event.target.comment.value
         })
     })
     .then(response => response.json())
@@ -93,9 +93,26 @@ function newComment(event) {
 
 function addComment(comment, card) {
     //adds comment in a p to card div
+    const commentContainer = card.querySelector("comment-container");
+    const commentDiv = document.createElement("div");
+    commentDiv.classList.add("comment-div");
+    const editButton = document.createElement("button");
+    editButton.classList.add("edit-button");
+    //add eventlistener for editButton
+    const deleteButton = document.createElement("button");
+    deleteButton.classList.add("delete-button")
+    //add eventlistener for deleteButton
     const p = document.createElement('p');
     p.innerText = comment.text;
-    card.appendChild(p);
+    commentContainer.append(p, editButton, deleteButton);
+}
+
+function addEditListener(button) {
+
+}
+
+function addDeleteListener(button) {
+    
 }
 
 function getButterflies() {
