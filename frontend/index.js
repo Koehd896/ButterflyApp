@@ -100,6 +100,7 @@ function addComment(comment, card) {
     commentDiv.append(p, editForm, deleteButton);
     commentContainer.appendChild(commentDiv);
     addEditListener(editForm);
+    addDeleteListener(deleteButton);
 }
 
 function addEditListener(form) {
@@ -124,7 +125,13 @@ function addEditListener(form) {
 }
 
 function addDeleteListener(button) {
-    
+    commentId = button.parentNode.id
+    button.addEventListener("click", function() {
+        fetch(`http://localhost:3000/comments/${commentId}`, {
+            method: "DELETE"
+        });
+        button.parentNode.remove()
+    })
 }
 
 function getButterflies() {
