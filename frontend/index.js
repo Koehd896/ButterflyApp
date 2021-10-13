@@ -131,12 +131,14 @@ function editComment(commentId, commentText, form) {
 
 function addDeleteListener(button) {
     commentId = button.parentNode.id
-    button.addEventListener("click", function() {
-        fetch(`http://localhost:3000/comments/${commentId}`, {
-            method: "DELETE"
-        });
-        button.parentNode.remove()
-    })
+    button.addEventListener("click", currentUser.delete(button, commentId))
+}
+
+function deleteComment(button, commentId) {
+    fetch(`http://localhost:3000/comments/${commentId}`, {
+        method: "DELETE"
+    });
+    button.parentNode.remove()
 }
 
 function getButterflies() {
@@ -162,17 +164,15 @@ function newUser(form) {
         case "super-user":
             const user = new SuperUser(form.name.value);
             currentUser = user;
-            document.querySelectorAll(".edit-form").forEach(form => form.style.display = "block")
+            document.querySelectorAll(".edit-form").forEach(form => form.style.display = "block");
             break;
         case "expert":
             const user = new Expert(form.name.value);
             currentUser = user;
             document.querySelectorAll(".delete-btn").forEach(btn => btn.style.display = "block");
+            document.querySelectorAll(".edit-form").forEach(form => form.style.display = "block");
     }
     document.querySelectorAll(".comment-form").forEach(form => form.style.display = "block")
-
-    
-
 } 
 
 class User {
@@ -190,5 +190,11 @@ class SuperUser extends User {
         editComment(commentId, commentText, form)
     }
 
+}
+
+class Expert extends SuperUser {
+    delete(button, commentId) {
+        deleteComment(button, commentId)
+    }
 }
 
