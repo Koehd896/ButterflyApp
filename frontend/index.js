@@ -116,10 +116,26 @@ function addComment(comment, card) {
     `
     commentDiv.append(p, editForm, editButton, deleteButton);
     commentContainer.appendChild(commentDiv);
+    addEditListener(editForm);
 }
 
-function addEditListener(button) {
-    button.addEventListener("click", )
+function addEditListener(form) {
+    const commentId = form.parentNode.id;
+    form.addEventListener("submit", function(event) {
+        event.preventDefault();
+        fetch(`http://localhost:3000/comments/${commentId}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            body: JSON.stringify({
+                "text": form.comment-text.value,
+                "user": currentUser
+            })
+        })
+        
+    })
 }
 
 function addDeleteListener(button) {
