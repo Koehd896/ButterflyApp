@@ -6,7 +6,7 @@ class CommentsController < ApplicationController
         render json: comment
     end
 
-    def edit
+    def update
         comment = Comment.find(params["id"])
         comment.text = "#{params["user"]["name"]} says: #{params["text"]}"
         comment.save

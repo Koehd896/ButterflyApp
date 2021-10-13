@@ -29,27 +29,10 @@ function renderButterfly(butterfly) {
     descriptionContainer.prepend(btn);
     const commentForm = div.querySelector("form")
     addCommentListener(commentForm)
-
-
-    // const img = document.createElement("img");
-    // img.setAttribute("src", butterfly.image);
-
-    // const h2 = document.createElement("h2");
-    // h2.innerHTML = butterfly.name;
-
-    // const pDiv = document.createElement("div")
-    // const p = document.createElement("p");
-    // p.innerHTML = butterfly.description;
-    
-
-
-    // pDiv.appendChild(p);
-    // pDiv.classList.add("description")
-    // div.append(img, h2, descriptionButton, pDiv);
-
     const container = document.getElementById("card-container");
     container.appendChild(div);
     addDescriptionListener(btn);
+    butterfly.comments.forEach(comment => addComment(comment, container))
 
     
 }
@@ -111,16 +94,17 @@ function addComment(comment, card) {
     p.classList.add("comment-text");
     const editForm = document.createElement("form")
     editForm.innerHTML = `
-        <input type="text" name="comment-text"></input>
+        <input type="text" name="comment-text" class="comment-text"></input>
         <input type="submit" value="Edit"></input>
     `
-    commentDiv.append(p, editForm, editButton, deleteButton);
+    commentDiv.append(p, editForm, deleteButton);
     commentContainer.appendChild(commentDiv);
     addEditListener(editForm);
 }
 
 function addEditListener(form) {
     const commentId = form.parentNode.id;
+    const commentText = form.querySelector(".comment-text");
     form.addEventListener("submit", function(event) {
         event.preventDefault();
         fetch(`http://localhost:3000/comments/${commentId}`, {
@@ -130,11 +114,12 @@ function addEditListener(form) {
                 "Accept": "application/json"
             },
             body: JSON.stringify({
-                "text": form.comment-text.value,
+                "text": commentText.value,
                 "user": currentUser
             })
         })
-        
+        .then(response => response.json())
+        .then(comment => form.previousSibling.innerText = comment.text)
     })
 }
 
