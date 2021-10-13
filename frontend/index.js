@@ -81,7 +81,8 @@ function newComment(event) {
             "Accept": "application/json"
         },
         body: JSON.stringify({
-            "text": event.target.comment.value
+            "text": event.target.comment.value,
+            "user": currentUser
         })
     })
     .then(response => response.json())
@@ -93,22 +94,32 @@ function newComment(event) {
 
 function addComment(comment, card) {
     //adds comment in a p to card div
-    const commentContainer = card.querySelector("comment-container");
+    const commentContainer = card.querySelector(".comment-container");
     const commentDiv = document.createElement("div");
     commentDiv.classList.add("comment-div");
-    const editButton = document.createElement("button");
-    editButton.classList.add("edit-button");
+    commentDiv.id = comment.id
+    // const editButton = document.createElement("button");
+    // editButton.classList.add("edit-button");
+    // editButton.innerText = "Edit"
     //add eventlistener for editButton
     const deleteButton = document.createElement("button");
     deleteButton.classList.add("delete-button")
+    deleteButton.innerText = "Delete"
     //add eventlistener for deleteButton
     const p = document.createElement('p');
     p.innerText = comment.text;
-    commentContainer.append(p, editButton, deleteButton);
+    p.classList.add("comment-text");
+    const editForm = document.createElement("form")
+    editForm.innerHTML = `
+        <input type="text" name="comment-text"></input>
+        <input type="submit" value="Edit"></input>
+    `
+    commentDiv.append(p, editForm, editButton, deleteButton);
+    commentContainer.appendChild(commentDiv);
 }
 
 function addEditListener(button) {
-
+    button.addEventListener("click", )
 }
 
 function addDeleteListener(button) {
