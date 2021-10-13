@@ -108,20 +108,24 @@ function addEditListener(form) {
     const commentText = form.querySelector(".comment-text");
     form.addEventListener("submit", function(event) {
         event.preventDefault();
-        fetch(`http://localhost:3000/comments/${commentId}`, {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            },
-            body: JSON.stringify({
-                "text": commentText.value,
-                "user": currentUser
-            })
-        })
-        .then(response => response.json())
-        .then(comment => form.previousSibling.innerText = comment.text)
+        currentUser.edit(commentId, commentText, form);
     })
+}
+
+function editComment(commentId, commentText, form) {
+    fetch(`http://localhost:3000/comments/${commentId}`, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        body: JSON.stringify({
+            "text": commentText.value,
+            "user": currentUser
+        })
+    })
+    .then(response => response.json())
+    .then(comment => form.previousSibling.innerText = comment.text)
 }
 
 function addDeleteListener(button) {
@@ -163,5 +167,12 @@ class User {
     comment(event) {
         newComment(event)
     }
+}
+
+class SuperUser extends User {
+    edit(commentId, commentText, form) {
+        editComment(commentId, commentText, form)
+    }
+
 }
 
