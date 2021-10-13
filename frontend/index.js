@@ -131,7 +131,9 @@ function editComment(commentId, commentText, form) {
 
 function addDeleteListener(button) {
     commentId = button.parentNode.id
-    button.addEventListener("click", currentUser.delete(button, commentId))
+    button.addEventListener("click", function() {
+        currentUser.delete(button, commentId)
+    })
 }
 
 function deleteComment(button, commentId) {
@@ -162,13 +164,13 @@ function newUser(form) {
             currentUser = user;
             break;
         case "super-user":
-            const user = new SuperUser(form.name.value);
-            currentUser = user;
+            const superUser = new SuperUser(form.name.value);
+            currentUser = superUser;
             document.querySelectorAll(".edit-form").forEach(form => form.style.display = "block");
             break;
         case "expert":
-            const user = new Expert(form.name.value);
-            currentUser = user;
+            const expert = new Expert(form.name.value);
+            currentUser = expert;
             document.querySelectorAll(".delete-btn").forEach(btn => btn.style.display = "block");
             document.querySelectorAll(".edit-form").forEach(form => form.style.display = "block");
     }
