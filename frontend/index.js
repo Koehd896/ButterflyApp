@@ -86,13 +86,14 @@ function addComment(comment, card) {
     // editButton.innerText = "Edit"
     //add eventlistener for editButton
     const deleteButton = document.createElement("button");
-    deleteButton.classList.add("delete-button")
+    deleteButton.classList.add("delete-btn")
     deleteButton.innerText = "Delete"
     //add eventlistener for deleteButton
     const p = document.createElement('p');
     p.innerText = comment.text;
     p.classList.add("comment-text");
     const editForm = document.createElement("form")
+    editForm.classList.add("edit-form");
     editForm.innerHTML = `
         <input type="text" name="comment-text" class="comment-text"></input>
         <input type="submit" value="Edit"></input>
@@ -151,12 +152,27 @@ loginBtn.addEventListener("click", event => {
 })
 
 function newUser(form) {
-    //create new user js object, set as currentUser
-    const user = new User(form.name.value);
-    currentUser = user;
-    //show add comment button for butterflies
+    //conditional statement to determine what kind of user to create 
+    //and what buttons to display
+    switch (form.querySelector("#user-types").value) {
+        case "user":
+            const user = new User(form.name.value);
+            currentUser = user;
+            break;
+        case "super-user":
+            const user = new SuperUser(form.name.value);
+            currentUser = user;
+            document.querySelectorAll(".edit-form").forEach(form => form.style.display = "block")
+            break;
+        case "expert":
+            const user = new Expert(form.name.value);
+            currentUser = user;
+            document.querySelectorAll(".delete-btn").forEach(btn => btn.style.display = "block");
+    }
     document.querySelectorAll(".comment-form").forEach(form => form.style.display = "block")
-    //eventually show other options based on the kind of user
+
+    
+
 } 
 
 class User {
