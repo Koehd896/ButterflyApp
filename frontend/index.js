@@ -70,25 +70,16 @@ function newComment(event) {
     })
     .then(response => response.json())
     .then(comment => addComment(comment, event.target.parentNode))
-    //fetch post call with text argument
-    //post call returns new comment object
-    //create new p in event.target and add comment text
 }
 
 function addComment(comment, card) {
-    //adds comment in a p to card div
     const commentContainer = card.querySelector(".comment-container");
     const commentDiv = document.createElement("div");
     commentDiv.classList.add("comment-div");
     commentDiv.id = comment.id
-    // const editButton = document.createElement("button");
-    // editButton.classList.add("edit-button");
-    // editButton.innerText = "Edit"
-    //add eventlistener for editButton
     const deleteButton = document.createElement("button");
     deleteButton.classList.add("delete-btn")
     deleteButton.innerText = "Delete"
-    //add eventlistener for deleteButton
     const p = document.createElement('p');
     p.innerText = comment.text;
     p.classList.add("comment-text");
@@ -181,7 +172,6 @@ class User {
     constructor(name) {
         this.name = name;
     }
-
     comment(event) {
         newComment(event)
     }
@@ -191,7 +181,6 @@ class SuperUser extends User {
     edit(commentId, commentText, form) {
         editComment(commentId, commentText, form)
     }
-
 }
 
 class Expert extends SuperUser {
