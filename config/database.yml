@@ -52,3 +52,12 @@ test:
   username: butterflyapp
   password: butterfly
   timeout: 5000
+
+production:
+  adapter: postgresql
+  encoding: unicode
+  database: butterflyapp_production
+  pool: 5
+  username: butterflyapp
+  password: butterfly
+  timeout: 5000
