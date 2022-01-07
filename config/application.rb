@@ -24,6 +24,11 @@ module ButterflyAppApi
     # Adding back cookies and session middleware
     config.middleware.use ActionDispatch::Cookies
     config.middleware.use ActionDispatch::Session::CookieStore
+
+    # Use SameSite=Strict for all cookies to help protect against CSRF
+    # https://owasp.org/www-community/SameSite
+    config.action_dispatch.cookies_same_site_protection = :strict
+    
     # config.middleware.insert_before 0, Rack::Cors do
     #   allow do
     #     origins '*'
