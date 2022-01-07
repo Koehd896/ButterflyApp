@@ -21,6 +21,9 @@ Bundler.require(*Rails.groups)
 
 module ButterflyAppApi
   class Application < Rails::Application
+    # Adding back cookies and session middleware
+    config.middleware.use ActionDispatch::Cookies
+    config.middleware.use ActionDispatch::Session::CookieStore
     # config.middleware.insert_before 0, Rack::Cors do
     #   allow do
     #     origins '*'
